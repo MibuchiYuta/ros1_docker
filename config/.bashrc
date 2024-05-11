@@ -47,12 +47,12 @@ esac
 
 if [ -n "$force_color_prompt" ]; then
     if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-	# We have color support; assume it's compliant with Ecma-48
-	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
-	# a case would tend to support setf rather than setaf.)
-	color_prompt=yes
+    # We have color support; assume it's compliant with Ecma-48
+    # (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+    # a case would tend to support setf rather than setaf.)
+    color_prompt=yes
     else
-	color_prompt=
+    color_prompt=
     fi
 fi
 
@@ -115,6 +115,18 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+source /opt/ros/noetic/setup.bash
+source /home/docker/catkin_ws/devel/setup.bash
+
+export LIBGL_ALWAYS_SOFTWARE=1
+export LIBGL_ALWAYS_INDIRECT=0
 
 # git ブランチ表示
+if [ -f ~/.git-completion.sh ]; then
+    source ~/.git-completion.sh
+fi
+if [ -f ~/.git-prompt.sh ]; then
+    source ~/.git-prompt.sh
+fi
+
 PS1='\[\033[1;32m\]\u@\h\[\033[00m\]:\[\033[1;34m\]\W\[\033[00m\]\[\033[1;31m\]$(__git_ps1)\[\033[00m\]\$ '
