@@ -1,7 +1,9 @@
 FROM osrf/ros:noetic-desktop-full
 
-WORKDIR /home
-ENV HOME /home
+ENV USER docker
+ENV PASSWORD docker
+ENV HOME /home/${USER}
+WORKDIR ${HOME}
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV TZ Asia/Tokyo
@@ -13,22 +15,38 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 SHELL ["/bin/bash", "-c"]
 
-# install vim
+# install
 RUN apt-get update -qq
 RUN apt-get install -y tzdata
-RUN apt-get update && apt-get install -y git lsb-release sudo gnupg curl
+RUN apt-get update && apt-get install -y \
+    git \
+    lsb-release \
+    sudo \
+    gnupg \
+    curl
+RUN apt-get install -y \
+    ros-noetic-rqt-* \
+    ros-noetic-moveit \
+    ros-noetic-roboticsgroup-upatras-gazebo-plugins \
+    ros-noetic-position-controllers \
+    ros-noetic-ros-control \
+    ros-noetic-ros-controllers　\
 
-
-# add user
-RUN useradd -m ubuntu && echo "ubuntu:ubuntu" | chpasswd && adduser ubuntu sudo
-USER ubuntu
-
-RUN apt-get install -y ros-noetic-rqt-* 
 RUN apt-get install -y python3-catkin-tools
 
-# set catkin workspace
-RUN source /opt/ros/noetic/setup.bash && mkdir -p catkin_ws/src && cd ~/catkin_ws && catkin build 
+RUN curl -o .git-completion.sh https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
+RUN curl -o .git-prompt.sh https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
+COPY config/.bashrc ${HOME}/.bashrc
 
-COPY config/.bashrc /home/.bashrc
+# add user
+RUN useradd --user-group --create-home --shell /bin/false ${USER}
+RUN gpasswd -a ${USER} sudo
+RUN echo "${USER}:${PASSWORD}" | chpasswd
+RUN sed -i.bak "s#${HOME}:#${HOME}:${SHELL}#" /etc/passwd
+RUN gpasswd -a ${USER} dialout
+RUN chown -R ${USER}:${USER} ${HOME}
 
-# orne_or install
+# set defalut user
+USER ${USER}
+RUN cd ${HOME}
+
