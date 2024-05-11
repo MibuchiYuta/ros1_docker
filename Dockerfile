@@ -30,7 +30,7 @@ RUN apt-get install -y \
     ros-noetic-roboticsgroup-upatras-gazebo-plugins \
     ros-noetic-position-controllers \
     ros-noetic-ros-control \
-    ros-noetic-ros-controllers　\
+    ros-noetic-ros-controllers
 
 RUN apt-get install -y python3-catkin-tools
 
