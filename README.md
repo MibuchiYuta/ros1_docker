@@ -14,12 +14,12 @@ mkdir -p orne_or_docker/catkin_ws/src && cd orne_or_docker
 
 本リポジトリをcloneする
 ```bash
-git clone -b orne_or https://github.com/MibuchiYuta/ros1_docker.git
+git clone -b orne_or https://github.com/MibuchiYuta/ros1_docker.git && cd ros1_docker
 ```
 
 ビルドする
 ```bash
-ros1_docker/build.sh
+./build.sh && cd ..
 ```
 
 orne_orをcloneする
