@@ -47,6 +47,9 @@ wstool merge orne_or/orne_or_pkgs.install
 wstool up
 ```
 ```bash
+rosdep update
+```
+```bash
 rosdep install --from-paths . --ignore-src --rosdistro $ROS_DISTRO -y
 ```
 ```bash
